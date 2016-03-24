@@ -3,6 +3,15 @@ using System.Collections;
 
 public class PickUpController : MonoBehaviour {
 
+    // I want to set this value in the Editor, so...
+    [SerializeField]           // This way, the private property can't be edited by other objects,
+    private int pickUpValue;   // but it can be edited in the Editor.
+
+    void OnEnable()
+    {
+        GameController.Instance.pickUpCreated(pickUpValue);
+    }
+    
     /* In the tutorial, the player has the code to disable things it pick ups.
      * This is bad because:
      * 1) We are giving control of an object's state to another object, 
@@ -15,9 +24,11 @@ public class PickUpController : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            this.gameObject.SetActive(false);
+            GameController.Instance.AddToScore(pickUpValue);
+
+            gameObject.SetActive(false);
         }
     }
 }
