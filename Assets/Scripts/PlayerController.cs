@@ -20,13 +20,12 @@ public class PlayerController : MonoBehaviour {
     {
         rb = GetComponent<Rigidbody>(); //We set the reference to our Rigidbody here.
 
+        movement = Vector3.zero;
+
         moveHorizontal = 0;
         moveVertical = 0;
 	}
-	
-	// Update is called once per frame
-	void Update () {	}
-
+    
     // FixedUpdate is called before performing physics calculations
     // We'll move the ball by applying force, so movement must be here.
     void FixedUpdate()
@@ -45,6 +44,7 @@ public class PlayerController : MonoBehaviour {
 
         movement.Set(moveHorizontal, 0.0f, moveVertical); // I use "Set" because using "new" to set values creates another instance of the object.
                                                           // I want to use the same to save memory and CPU. So "Set" is the way to go.
+                                                          // Basically, THIS AVOIS HEAP FRAGMENTATION.
 
         rb.AddForce(movement * speed); //Using our reference to the Rigidbody we can apply the movement Vector3 as a force with the AddForce method.
     }
