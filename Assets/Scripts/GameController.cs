@@ -1,4 +1,4 @@
-﻿public class GameController {
+﻿public class GameController { // I need this class as a gameObject since I need to set references to the UI.
 
     /* So, Unity's Roll-a-ball tutorial uses the PlayerController to keep track of the score.
      * I'll be using a singleton for a game controller, so every object can reference to it.
@@ -32,7 +32,7 @@
     {
         Score = 0;
         pickUpsOnLevel = 0;
-        levelWon = false;
+        LevelWon = false;
     }
 
     /* Then, instead of instantiating this object using GameController gameController = new GameController();
@@ -40,27 +40,10 @@
      * And since it's a singleton, it will always return the same instance ;)
      */
 
-    public int Score // Getter and setter for the score.
-    {
-        get
-        {
-            return score; // I'll use the getter to show the score.
-        }
-
-        private set
-        {
-            score = value;
-        }
-    }
-
     public void AddToScore(int pickUpValue)
     {
         Score += pickUpValue;
-        UpdateScoreUI();
         CompareScoreToObjective();
-
-        if (levelWon)
-            CongratulateUser();
     }
 
     public void pickUpCreated(int pickUpValue)
@@ -70,15 +53,33 @@
 
     private void CompareScoreToObjective()
     {
-        if (Score == pickUpsOnLevel)
-            levelWon = true;
+        if (Score >= pickUpsOnLevel)
+            LevelWon = true;
     }
 
-    private void UpdateScoreUI()
+    public int Score // Getter and setter for the score.
     {
+        get
+        {
+            return score; // I'll use the getter to show the score.
+        }
+
+        private set // I don't want anyone else to set this value, from outside it's READ-ONLY
+        {
+            score = value;
+        }
     }
 
-    private void CongratulateUser()
+    public bool LevelWon
     {
+        get
+        {
+            return levelWon;
+        }
+
+        private set
+        {
+            levelWon = value; //  I don't want anyone else to set this value, from outside it's READ-ONLY.
+        }
     }
 }
